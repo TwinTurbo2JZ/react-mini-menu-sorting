@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react/cjs/react.development";
+import "./App.css";
+import Cards from "./Cards";
+import Categories from "./Categories";
+import dataAll from "./data";
 
 function App() {
+  const [data, setData] = useState(dataAll);
+
+  //category button
+  const categories = ["all", ...new Set(data.map((d) => d.category))];
+
+  const categorize = (category) => {
+    console.log("clicked", category);
+
+    if (category === "all") {
+      setData(dataAll);
+      return;
+    }
+
+    let sortedData = data.filter((data) => data.category === category);
+    setData(sortedData);
+    console.log(sortedData);
+  };
+  console.log(categories);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container">
+      <h1>menu sorting</h1>
+      <Categories categories={categories} categorize={categorize} />
+      <Cards data={data} />
     </div>
   );
 }
